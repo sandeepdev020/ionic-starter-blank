@@ -1,20 +1,45 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
+    <ion-title color="primary">
+      <h1 class="title">Sample App</h1>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="content">
+  <ion-list>
+    <ion-item>
+      <ion-input
+        [value]="chosenDate"
+        label="Select a date"
+        placeholder="Select Date"
+        id="triggercheckInStartDate"
+      ></ion-input>
+    </ion-item>
+  </ion-list>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list class="date-list" lines="full">
+    <ion-item *ngFor="let dt of dates" class="date-item">
+      <ion-label class="date-label">{{dt.label}}</ion-label>
+      <ion-label class="date-value">{{dt.date}}</ion-label>
+    </ion-item>  
+  </ion-list>
 </ion-content>
+
+<ion-popover trigger="triggercheckInStartDate" size="cover" #data>
+  <ng-template>
+    <ion-datetime
+      #datetime
+      presentation="date"
+      [min]="nextDay"
+      [max]="nextFiveYear"
+      (ionChange)="handleDateSelect(datetime.value); data.dismiss()"      
+    >
+      <span slot="title">Select a Date</span>
+      <ion-buttons slot="buttons">        
+        <ion-button color="secondary" (click)="datetime.cancel(); data.dismiss()">Cancel</ion-button>
+        <ion-button color="primary" (click)="datetime.confirm()">Submit</ion-button>
+      </ion-buttons>
+    </ion-datetime>
+  </ng-template>
+</ion-popover>
